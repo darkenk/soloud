@@ -73,7 +73,7 @@ namespace SoLoud
 	{
 		if (!SDL_WasInit(SDL_INIT_AUDIO))
 		{
-			if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
+			if (SDL_InitSubSystem(SDL_INIT_AUDIO) == false)
 			{
 				return UNKNOWN_ERROR;
 			}
@@ -83,7 +83,7 @@ namespace SoLoud
 
 		gActiveAudioSpec = { SDL_AUDIO_F32LE, (int)aChannels, (int)aSamplerate };
 
-		gAudioStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_OUTPUT, &gActiveAudioSpec, soloud_sdl3static_audiomixer, (void*)aSoloud);
+		gAudioStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &gActiveAudioSpec, soloud_sdl3static_audiomixer, (void*)aSoloud);
 		if (!gAudioStream)
 		{
 			return UNKNOWN_ERROR;

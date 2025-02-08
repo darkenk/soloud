@@ -162,7 +162,23 @@ if (SOLOUD_BACKEND_SDL2)
 		${LINK_LIBRARIES}
 		${SDL2_LIBRARY}
 	)
+endif()
 
+
+if (SOLOUD_ENABLE_BACKEND_SDL3)
+	find_package (SDL3 REQUIRED)
+	#include_directories (${SDL3_INCLUDE_DIR})
+	add_definitions (-DWITH_SDL3_STATIC)
+
+	set (BACKENDS_SOURCES
+		${BACKENDS_SOURCES}
+		${BACKENDS_PATH}/sdl3_static/soloud_sdl3_static.cpp
+	)
+
+	set (LINK_LIBRARIES
+		${LINK_LIBRARIES}
+		SDL3::SDL3
+	)
 endif()
 
 if (SOLOUD_BACKEND_ALSA)                     
@@ -295,6 +311,4 @@ if (SOLOUD_STATIC)
 endif()
 
 target_link_libraries (${TARGET_NAME} ${LINK_LIBRARIES})
-
-include (Install)
-INSTALL(FILES ${TARGET_HEADERS} DESTINATION include/${TARGET_NAME})
+target_include_directories(${TARGET_NAME} PUBLIC ${HEADER_PATH})
