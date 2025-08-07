@@ -311,4 +311,8 @@ if (SOLOUD_STATIC)
 endif()
 
 target_link_libraries (${TARGET_NAME} ${LINK_LIBRARIES})
-target_include_directories(${TARGET_NAME} PUBLIC ${HEADER_PATH})
+target_include_directories(${TARGET_NAME}
+	PUBLIC
+        $<BUILD_INTERFACE:${SOLOUD_ROOT_DIRECTORY}/include>
+        $<INSTALL_INTERFACE:include>
+)

@@ -69,3 +69,54 @@ endif ()
 IF (SOLOUD_GENERATE_GLUE)
 	include (gen_glue.cmake)
 endif ()
+
+# ------------------------------
+# Install rules for SoLoud
+# ------------------------------
+include(GNUInstallDirs)
+
+install(
+	TARGETS soloud
+	EXPORT SoLoudTargets
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Install headers (adjust path if needed)
+install(
+    DIRECTORY ${SOLOUD_ROOT_DIRECTORY}/include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILES_MATCHING PATTERN "*.h"
+)
+
+# Export CMake targets
+install(
+    EXPORT SoLoudTargets
+    FILE SoLoudTargets.cmake
+    NAMESPACE SoLoud::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SoLoud
+)
+
+# Create Config & Version files for find_package()
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/SoLoudConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/SoLoudConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SoLoud
+)
+
+# write_basic_package_version_file(
+#     ${CMAKE_CURRENT_BINARY_DIR}/SoLoudConfigVersion.cmake
+#     VERSION ${PROJECT_VERSION}
+#     COMPATIBILITY AnyNewerVersion
+# )
+
+install(
+    FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/SoLoudConfig.cmake
+        #${CMAKE_CURRENT_BINARY_DIR}/SoLoudConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SoLoud
+)
